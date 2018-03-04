@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import SearchedResultList from './SearchedResultLists.js';
+import SearchedResults from './SearchedResults.js';
+
 
 class Searched extends Component {
 	constructor() {
@@ -16,18 +19,26 @@ class Searched extends Component {
             profileButton: false,
             profileState: 'none',
 
-            logOutState: 'none'
+			logOutState: 'none',
+			
+			Searched: []
 
         };
         debugger;
 	}
-	ComponentWillMount() {
-		debugger;
-	}
-    ComponentDidMount() {
-		debugger;
-    }
 
+	componentWillMount() {
+        if(this.props.Current != null) {
+            this.signingCheck(true);
+        }
+        else {
+            this.signingCheck(false);
+		}
+		debugger;
+		this.state.Searched = this.props.Searched;
+		this.setState(this.state);
+    }
+	
     // opens the modal when user clicks on sign in
     signInOnClick() {
     //    debugger;
@@ -123,21 +134,18 @@ class Searched extends Component {
 
 
     signOut() {
-        if(localStorage.getItem("current")) {
-            // removes from the localStorage
-            localStorage.removeItem("current");
-            this.signingCheck(false);
-
-        }
-    }
+		// debugger;
+		 if(this.props.Current != null) {
+			 this.props.LogOut();
+			 this.signingCheck(false);
+		 }
+	 }
 
 
     signUpFunc() {
         let username = this.state.idValue;
         let password = this.state.passwordValue;
         
-        let name = document.getElementsByClassName("su-na").name.value;
-        let description = document.getElementsByClassName("su-iy").desc.value
         let flag = true;
 
         for(let a = 0; a < this.props.UserData.length; a++) {
@@ -148,8 +156,6 @@ class Searched extends Component {
         
         }
         
-
-
         if(flag) {
             this.signingCheck(flag);
             // this.props.signUps(username);
@@ -186,184 +192,14 @@ class Searched extends Component {
 	    this.setState({ passwordValue: e.target.value });
 	  }
 
-	/*
-				// gets the exact data
-				processUser();
-				// gets the similar data for the searched list
-				getResults();
-
-				// modal shows
-				let modal = document.getElementById('modal');
-				let signIn = document.getElementById('signInModal');
-				let signUp = document.getElementById('signUpModal');
-				let span1 = document.getElementsByClassName('close')[0];
-				let span2 = document.getElementsByClassName('close')[1];
-
-				// opens the modal when user clicks on sign in
-				signIn.onclick = () => {
-					modal1.style.display = 'block';
-				}
-
-				// opens the modal when user clicks on sign up
-				signUp.onclick = () => {
-					modal2.style.display = 'block';
-				}
-
-				// closes the modal when user clicks on X
-
-				span1.onclick = () => {
-					modal1.style.display = "none";
-					modal2.style.display = "none";
-				}
-				span2.onclick = () => {
-					modal1.style.display = "none";
-					modal2.style.display = "none";
-				}
-
-
-				// closes modal when use clicks outside of the modal
-				window.onclick = (event) => {
-					if(event.target == modal1) {
-						modal1.style.display = "none";
-						modal2.style.display = "none";
-					}
-					if(event.target == modal2) {
-						modal1.style.display = "none";
-						modal2.style.display = "none";
-					}
-				}
-
-				//checks whether the user is logged in
-				if(localStorage.getItem("current")) {
-					let signIn = document.getElementById('signInModal');
-					let signUp = document.getElementById('signUpModal');
-					let profile = document.getElementById('profile');
-					let logout = document.getElementById('logoutButton');
-					signIn.style.display = "none";
-					signUp.style.display = "none";
-					profile.style.display = "block";
-					logout.style.display = "block";
-				}
-	 */
-
-  processUser()
-  {
-  	/*
-    let parameters = location.search.substring(1);
-		let searchValue = parameters.split('&');
-		let searchField = "";
-		let searchedArray = [];
-		// spliting what user is searching and in what field
-	//	debugger;
-		// catches when user clicks on the list
-		if(searchValue.length == 1) {
-			 searchValue = searchValue[0].split("=")[1];
-		}
-		else {
-			searchField = searchValue[1].split('=')[1];
-			searchValue = searchValue[0].split('=')[1];
-		}
-	//	debugger;
-
-    searched = unescape(searchValue);
-
-		// removing whitespace from homepage
-		if(searchValue.includes("+")) {
-			searchedArray = searchValue.split("+");
-			searched = "";
-			for(let c = 0; c < searchedArray.length; c++) {
-
-				if(1 < searchedArray.length && c < (searchedArray.length -1)) {
-					searched += searchedArray[c] + " ";
-				}
-				else {
-					searched += searchedArray[c];
-				}
-			}
-		}
-
-
-		document.getElementById("searched").value = searched;
-	//	debugger;
-		let user = document.getElementsByClassName("section")[0];
-
-		// searching only works on name currently
-		// needs to support skills, mails
-		// plus it needs to show most similar result to screen when exact data is not present
-
-		// show the searched person
-		for(let i = 0; i < userdata.length; i++) {
-			//debugger;
-
-			if(userdata[i].name.toLowerCase() === searched.toLowerCase()) {
-				// add name
-				let h1 = document.createElement("h1");
-				h1.innerHTML = userdata[i].name;
-				user.appendChild(h1);
-
-				// add img
-				let img = document.createElement("img");
-				let attributes = document.createAttribute('class');
-				attributes.value = "profile";
-				img.setAttributeNode(attributes);
-				img.src = userdata[i].pic;
-				user.appendChild(img);
-
-
-				// add email
-				let h4 = document.createElement("h4");
-				h4.innerHTML = userdata[i].email;
-				user.appendChild(h4);
-
-				// add rating
-				let h5 = document.createElement("h5");
-				h5.innerHTML = userdata[i].rating;
-				user.appendChild(h5);
-
-
-				// add skills
-				for(let a = 0; a < userdata[i].skills.length; a++) {
-					//debugger;
-					let button = document.createElement("button");
-					button.innerHTML = userdata[i].skills[a];
-					let attributes = document.createAttribute('class');
-					attributes.value = "buttons"; // can be dynamic
-					button.setAttributeNode(attributes);
-					button.class = 'buttons';
-					user.appendChild(button);
-				}
-
-				// add description
-				let p = document.createElement("p");
-				p.innerHTML = userdata[i].description;
-				user.appendChild(p);
-
-
-
-			}
-		}
-*/
-  	}
-
-	getResults() {
-		/*
-		// add results
-		let result = document.getElementsByClassName("results")[0];
-	//	debugger;
-		for(let b = 0; b < userdata.length; b++) {
-			debugger;
-			if(userdata[b].name.toLowerCase().includes(searched.toLowerCase())) {
-				let li = document.createElement("li");
-				let a = document.createElement("a");
-				a.innerHTML = userdata[b].name;
-				a.href = "./Searched.html?searched=" + userdata[b].name;
-				li.appendChild(a);
-				result.appendChild(li);
-
-			}
-		}
-		*/
-	}
+	  searching() {
+		  debugger;
+		//  debugger;
+	   // <Link to= {{pathname: '/searched'}}/>
+		  //browserHistory.push({pathname: '/searched', state: this.props})
+		  this.props.searching()
+		 this.props.history.push({pathname: '/searched'});
+	  }
 	
 	render() {
 
@@ -395,20 +231,20 @@ class Searched extends Component {
 
 				<nav>
 					<div className="container">
-						<form action='./Searched.html' /* Change this as well*/>
-							<input type="text" id="searched" name="searched"></input>
+						<form onSubmit={this.searching.bind(this)}>
+							<input type="text" id="searched" name="searched"/>
 							<button type='submit'>Search</button>
 						
 							<input type="radio" id="searchChoice1"
-						     name="search" value="Name" defaultChecked></input>
+						     name="search" value="Name" defaultChecked/>
 						    <label htmlFor="searchChoice1">Name</label>
 
 						    <input type="radio" id="searchChoice2"
-						     name="search" value="Skills"></input>
+						     name="search" value="Skills"/>
 						    <label htmlFor="searchChoice2">Skills</label>
 
 						    <input type="radio" id="searchChoice3"
-						     name="search" value="sth"></input>
+						     name="search" value="sth"/>
 						    <label htmlFor="searchChoice3">Mail</label>
 						</form>
 
@@ -417,6 +253,9 @@ class Searched extends Component {
 					<div>
 						<ul>
 							<div className="results">
+								{this.state.Searched.map(item => (
+									<SearchedResultList key={item.Name} data={item}/>
+								))}
 							</div>
 						
 
@@ -425,7 +264,6 @@ class Searched extends Component {
 				</nav>
 				<article>
 					<div className = "section">
-
 					</div>
 				</article>
 			<div id='modal1' className="modal1" style={{display:this.state.modal1State}}>

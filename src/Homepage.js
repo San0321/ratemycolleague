@@ -66,61 +66,15 @@ class Homepage extends Component {
         }
         // false means its logout
     }
-/*
+
     componentDidMount() {
-        // modal shows
-        let modal = document.getElementById('modal');
-        let signIn = document.getElementById('signInModal');
-        let signUp = document.getElementById('signUpModal');
-        let span1 = document.getElementsByClassName('close')[0];
-        let span2 = document.getElementsByClassName('close')[1];
-
-        debugger;
-  */      
-/*
-        // closes modal when use clicks outside of the modal
-        window.onclick = (event) => {
-            if(event.target == modal1) {
-                modal1.style.display = "none";
-                modal2.style.display = "none";
-            }
-            if(event.target == modal2) {
-                modal1.style.display = "none";
-                modal2.style.display = "none";
-            }
+        if(this.props.Current != null) {
+            this.signingCheck(true);
         }
-        */
-        //checks whether the user is logged in
-        /*
-        if(localStorage.getItem("current")) {
-            let signIn = document.getElementById('signInModal');
-            let signUp = document.getElementById('signUpModal');
-            let profile = document.getElementById('profile');
-            let logout = document.getElementById('logoutButton');
-            signIn.style.display = "none";
-            signUp.style.display = "none";
-            profile.style.display = "block";
-            logout.style.display = "block";
+        else {
+            this.signingCheck(false);
         }
     }
-*/
-    ComponentDidMount() {
-        //checks whether the user is logged in
-        /*
-        if(localStorage.getItem("current")) {
-            let signIn = document.getElementById('signInModal');
-            let signUp = document.getElementById('signUpModal');
-            let profile = document.getElementById('profile');
-            let logout = document.getElementById('logoutButton');
-            signIn.style.display = "none";
-            signUp.style.display = "none";
-            profile.style.display = "block";
-            logout.style.display = "block";
-        }
-        */
-    }
-
-    // use ref??
     dropDown() {
     	var x = document.getElementById("myTopnav");
     	if (x.className === "topnav") {
@@ -163,6 +117,7 @@ class Homepage extends Component {
             // we need to let the parent state to know we have been logged in
             this.state.modal1On = false;
             this.changeState();
+            debugger;
         }
         else {
             alert("Wrong Password or Username");
@@ -170,25 +125,10 @@ class Homepage extends Component {
         
     }
 
-
-
-
-    signOut() {
-        if(localStorage.getItem("current")) {
-            // removes from the localStorage
-            localStorage.removeItem("current");
-            this.signingCheck(false);
-
-        }
-    }
-
-
     signUpFunc() {
         let username = this.state.idValue;
         let password = this.state.passwordValue;
         
-        let name = document.getElementsByClassName("su-na").name.value;
-        let description = document.getElementsByClassName("su-iy").desc.value
         let flag = true;
 
         for(let a = 0; a < this.props.UserData.length; a++) {
@@ -199,8 +139,6 @@ class Homepage extends Component {
         
         }
         
-
-
         if(flag) {
             this.signingCheck(flag);
             // this.props.signUps(username);
@@ -211,6 +149,20 @@ class Homepage extends Component {
             this.changeState();
         }
     }
+
+
+
+
+    signOut() {
+       // debugger;
+        if(this.props.Current != null) {
+            this.props.LogOut();
+            this.signingCheck(false);
+        }
+    }
+
+
+    
 
   changeState() {
     if(this.state.modal1On == true) {
@@ -237,11 +189,21 @@ class Homepage extends Component {
     this.setState({ passwordValue: e.target.value });
   }
 
-  searching() {
+  searching(e) {
+     // debugger;
+     /*
+      let something = function(this) {
+          debugger;
+        
+      };
+      */
+      this.props.Searching(e.target[0].value);
+      this.props.history.push({pathname: '/searched'});
+      
     //  debugger;
    // <Link to= {{pathname: '/searched'}}/>
       //browserHistory.push({pathname: '/searched', state: this.props})
-     this.props.history.push({pathname: '/searched'});
+    
   }
 
 

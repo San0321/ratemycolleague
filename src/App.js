@@ -59,9 +59,11 @@ class App extends Component {
         Class: [],
         Email: "morty@ucsd.edu"
       }],
-      LoggedIn: "",
+      Current: null, // Name
       Search:"",
-      SearchItem:""
+      SearchItem:"",
+      Searched: []
+
     
        
     };
@@ -69,7 +71,29 @@ class App extends Component {
   }
 
   LoggedIn (username) {
-    // this.setState()
+    debugger;
+    this.state.Current = username;
+    this.setState(this.state);
+  }
+  Searching(value) {
+    this.state.Search = value;
+   // debugger;
+   // this.state.SearchItem = item;
+   
+    for(let a = 0; a < this.state.UserData.length; a++ ) {
+     // debugger;
+      if(this.state.UserData[a].Name.toLowerCase() === value.toLowerCase()) {
+        debugger;
+        this.state.Searched.push(this.state.UserData[a]);
+      }
+      
+    }
+    this.setState(this.state);
+  }
+  LogOut() {
+    debugger;
+    this.state.Current = null;
+    this.setState(this.state);
   }
 // <Route path={"searched"} component={Search} />
 // <Route path={"profile"} component={Profile}/>
@@ -80,8 +104,8 @@ class App extends Component {
       <div className="currentPage">
         <BrowserRouter>
           <Switch>
-            <Route exact path="/"  render={(props) => (<Homepage Invitation={this.state.Invitation} Message={this.state.Message} UserData={this.state.UserData} LoggedIn={this.LoggedIn.bind(this)} {...props}/> )}/> 
-            <Route exact path="/searched"  render={(props) => (<Searched Invitation={this.state.Invitation} Message={this.state.Message} UserData={this.state.UserData} LoggedIn={this.LoggedIn.bind(this)} {...props}/> )}/> 
+            <Route exact path="/"  render={(props) => (<Homepage Current={this.state.Current} Invitation={this.state.Invitation} Message={this.state.Message} UserData={this.state.UserData} LoggedIn={this.LoggedIn.bind(this)} LogOut={this.LogOut.bind(this)} Searching={this.Searching.bind(this)} {...props}/> )}/> 
+            <Route exact path="/searched"  render={(props) => (<Searched Searched={this.state.Searched} Searching={this.state.Searching} Current={this.state.Current} Invitation={this.state.Invitation} Message={this.state.Message} UserData={this.state.UserData} LoggedIn={this.LoggedIn.bind(this)} LogOut={this.LogOut.bind(this)} Searching={this.Searching.bind(this)} {...props}/> )}/> 
           </Switch>
         </BrowserRouter>
   
