@@ -1,0 +1,50 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { App } from './App';
+import { Profile } from './Profile';
+import { Link } from 'react-router-dom';
+
+class ProfileRendered extends React.Component{
+	render(){
+		return (
+		<div className="container">
+		
+     	<header>
+
+       	<div className="topnav" id="myTopnav">
+       	<Link to={'/'}>Home</Link>
+       	<a href="#" id="logoutButton" onClick={this.props.signOut}>Log Out</a>
+       	<a href="javascript:void(0);" style={{fontSize:'15px'}} className="icon" onClick={this.props.dropDown}>&#9776;</a>
+     	</div>
+     	<h1>Profile</h1>
+     	</header>
+
+
+		<nav>
+  		<ul>
+    		<li className="section">	</li>
+    		<li id="myName">Name: {this.props.myName}</li>
+    		<li>Major: {this.props.myMajor}</li>
+    		<li>Position: {this.props.myPosition}</li>
+    		<button onClick={this.props.myInvitation}>View Invitation</button>
+    		<button onClick={this.props.myMessage}>Read Message</button>
+    		<button onClick={this.props.myGroup}>View My Group</button>
+  		</ul>
+		</nav>
+
+		<article>
+  		<div class="article-section">
+      		<h1>About Myself</h1>
+    		<p>{this.props.myDescription}</p>
+  		</div>
+ 		</article>
+
+  		<footer>Phillip Jo and San Kang</footer>
+  		<div id = "bottomDiv">
+  		</div>
+
+  		</div>
+		);
+	}
+}
+export default ProfileRendered; 

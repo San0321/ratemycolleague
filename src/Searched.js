@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SearchedResultList from './SearchedResultLists.js';
 import SearchedResults from './SearchedResults.js';
+import './searched.css';
+import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 
 
 class Searched extends Component {
@@ -20,10 +22,9 @@ class Searched extends Component {
             profileState: 'none',
 
 			logOutState: 'none',
-			
-			Searched: []
-
-        };
+			Evaluation: []
+		};
+		
         debugger;
 	}
 
@@ -36,6 +37,16 @@ class Searched extends Component {
 		}
 		debugger;
 		this.state.Searched = this.props.Searched;
+		for(let i=0; i < this.props.UserData.length; ++i)
+		{
+			if(this.props.UserData[i].Name === this.props.Current)
+			{
+				for(let j=0; j < this.props.UserData[i].Evaluation.length; ++j)
+				{
+					this.state.Evaluation.push(this.props.UserData[i].Evaluation[j]);
+				}
+			}
+		}
 		this.setState(this.state);
     }
 	
@@ -142,9 +153,11 @@ class Searched extends Component {
 	 }
 
 
-    signUpFunc() {
+	 signUpFunc() {
         let username = this.state.idValue;
         let password = this.state.passwordValue;
+        let name = this.state.nameValue;
+        let desc = this.state.descValue;
         
         let flag = true;
 
@@ -158,7 +171,13 @@ class Searched extends Component {
         
         if(flag) {
             this.signingCheck(flag);
-            // this.props.signUps(username);
+            let newData = {
+                Name: name,
+                Password: password,
+                Id: username,
+                Description: desc
+            }
+            this.props.SignUps(username);
             this.props.LoggedIn(username);
             // also we need to store it to the state
             // we need to let the parent state to know we have been logged in
@@ -185,21 +204,48 @@ class Searched extends Component {
 	}
 
 	  idChange(e) {
-	      debugger;
-	    this.setState({ idValue: e.target.value });
+		this.setState({ idValue: e.target.value });
 	  }
 	  passwordChange(e) {
-	    this.setState({ passwordValue: e.target.value });
+		this.setState({ passwordValue: e.target.value });
+	  }
+	  nameChange(e) {
+		this.setState({ nameValue: e.target.value });
+	  }
+	  descChange(e) {
+		this.setState({ descValue: e.target.value });
 	  }
 
-	  searching() {
+	  searching(e) {
+		  this.props.Searching(e.target[0].value);
+		 // this.setState(this.state);
 		  debugger;
-		//  debugger;
-	   // <Link to= {{pathname: '/searched'}}/>
-		  //browserHistory.push({pathname: '/searched', state: this.props})
-		  this.props.searching()
-		 this.props.history.push({pathname: '/searched'});
+		//  
 	  }
+	  componentWillUpdate (nextProps) {
+		  debugger;
+		  this.state.Searched = nextProps.Searched;
+		  //this.props.history.push({pathname: '/searched'});
+		 // this.setState(this.state);
+		// do whatever clean up you need before rerendering
+		// goo practise checking somehow that you are in the desired situation
+	 }
+
+	handleAddInvitation(){
+		this.props.addInvitation(this.props.Current, this.props.Searched[0].Name);
+		alert("Your Invitation has been sent!");
+	}
+	
+	handleSendMessage(){
+		let userMessage = prompt("Enter a message");
+		this.props.replyMessage(this.props.Current, this.props.Searched[0].Name, userMessage);
+		alert("Your Message has been sent!");
+	}
+
+	handleWriteEvaluation(){
+		let inputReview = prompt("Enter your evaluation");
+		this.props.addEvaluation(this.props.Searched[0].Name, inputReview);
+	}
 	
 	render() {
 
@@ -215,11 +261,11 @@ class Searched extends Component {
       }
 
 		return (
-			<div>
+			<div className="searchbody">
 				<header>
 
 					<div className="topnav" id="myTopnav">
-						<a href="homepage.html"/* change this*/ className="active">Home</a>
+						<Link to={'/'}>Home</Link>
 						<a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}} id="signInModal">Sign In</a>
 	  					<a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}} id ="signUpModal">Sign Up</a>
 								<a href="profile.html" id='profile' style={{display: this.state.profileState}}>Profile</a>
@@ -264,6 +310,7 @@ class Searched extends Component {
 				</nav>
 				<article>
 					<div className = "section">
+						<SearchedResults item={this.state.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/>
 					</div>
 				</article>
 			<div id='modal1' className="modal1" style={{display:this.state.modal1State}}>
@@ -297,14 +344,18 @@ class Searched extends Component {
 								<h1>Sign Up</h1>
 						</div>
 						<div className="container">
-							<form action=''>
-								<label htmlFor='username'><b>Username</b></label>
-								<input type="text" name="username" className="su-un" placeholder="Enter Username"></input>
-								<label htmlFor="password"><b>Password</b></label>
-								<input type="password" name="password" className="su-pw" placeholder="Enter Password"></input>
-								<button type='button' className="signup" onClick={this.signUpFunc.bind(this)}>Sign Up</button>
-							</form>
-						</div>
+                            <form action=''>
+                                <label htmlFor='username'><b>Username</b></label>
+                                <input type="text" name="username" className="su-un" onChange={this.idChange.bind(this)} placeholder="Enter Username"/>
+                                <label htmlFor="name"><b>Name</b></label>
+                                <input type="text" name="name" className="su-na" onChange={this.nameChange.bind(this)} placeholder="Enter your name"/>
+                                <label htmlFor="password"><b>Password</b></label>
+                                <input type="password" name="password" className="su-pw" onChange={this.passwordChange.bind(this)} placeholder="Enter Password"/>
+                                <label htmlFor="desc"><b>Introduce Yourself!</b></label>
+                                <input type="text" name="desc" className="su-iy" onChange={this.descChange.bind(this)} placeholder="Required"/>
+                                <button type='button' className="signup" onClick={this.signUpFunc.bind(this)} >Sign Up</button>
+                            </form>
+                        </div>
 						<div className="container" style={moduleContainerStyle}>
 							 <button type="button" onClick={this.closeOnClick.bind(this)} className="cancelbtn">Cancel</button>
 							 <span className="psw">Forgot <a href="#">password?</a></span>

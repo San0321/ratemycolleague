@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 //import {browserHistory} from 'react-router-dom';
 import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
-//import users from './data';
-//import logo from './logo.svg';
-//import './Homepage.css';
+
+import './index.css';
+
 
 class Homepage extends Component {
     constructor() {
@@ -67,7 +67,7 @@ class Homepage extends Component {
         // false means its logout
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if(this.props.Current != null) {
             this.signingCheck(true);
         }
@@ -128,6 +128,8 @@ class Homepage extends Component {
     signUpFunc() {
         let username = this.state.idValue;
         let password = this.state.passwordValue;
+        let name = this.state.nameValue;
+        let desc = this.state.descValue;
         
         let flag = true;
 
@@ -141,7 +143,13 @@ class Homepage extends Component {
         
         if(flag) {
             this.signingCheck(flag);
-            // this.props.signUps(username);
+            let newData = {
+                Name: name,
+                Password: password,
+                Id: username,
+                Description: desc
+            }
+            this.props.SignUps(newData);
             this.props.LoggedIn(username);
             // also we need to store it to the state
             // we need to let the parent state to know we have been logged in
@@ -182,11 +190,16 @@ class Homepage extends Component {
   }
 
   idChange(e) {
-      debugger;
     this.setState({ idValue: e.target.value });
   }
   passwordChange(e) {
     this.setState({ passwordValue: e.target.value });
+  }
+  nameChange(e) {
+    this.setState({ nameValue: e.target.value });
+  }
+  descChange(e) {
+    this.setState({ descValue: e.target.value });
   }
 
   searching(e) {
@@ -206,7 +219,7 @@ class Homepage extends Component {
     
   }
 
-
+// <a className="active"><Link to={'/'}>Home</Link></a>
     
   render() {
 
@@ -221,14 +234,17 @@ class Homepage extends Component {
         backgroundColor: '#f1f1f1'
       }
     return (
-    <div className="Homepage">
+    <div className="bodyHomepage">
+        <header>
+        </header>
         <nav>
             <div className="topnav" id="myTopnav">
-                <a href="homepage.html" className="active">Home</a>
+                
+                <Link to={'/'}>Home</Link>
                 <a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}}  id="signInModal">Sign In</a>
                 <a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}}  id="signUpModal">Sign Up</a>
-                    <a href="profile.html" id="profile" style={{display: this.state.profileState}}>Profile</a>
-                    <a href="#" id="logoutButton" onClick={this.signOut.bind(this)} style={{display: this.state.logOutState}}>Log Out</a>
+                <Link style={{display: this.state.profileState}} to={'/profile'}>Profile</Link>      
+                <a href="#" id="logoutButton" onClick={this.signOut.bind(this)} style={{display: this.state.logOutState}}>Log Out</a>
                 <a href="javascript:void(0);" style={topnavStyle} className="icon" onClick={this.dropDown.bind(this)}>&#9776;</a>
             </div>
         </nav>
@@ -308,11 +324,11 @@ We want you to find best team-mate for your group work.
                                 <label htmlFor='username'><b>Username</b></label>
                                 <input type="text" name="username" className="su-un" onChange={this.idChange.bind(this)} placeholder="Enter Username"/>
                                 <label htmlFor="name"><b>Name</b></label>
-                                <input type="text" name="name" className="su-na" placeholder="Enter your name"/>
+                                <input type="text" name="name" className="su-na" onChange={this.nameChange.bind(this)} placeholder="Enter your name"/>
                                 <label htmlFor="password"><b>Password</b></label>
                                 <input type="password" name="password" className="su-pw" onChange={this.passwordChange.bind(this)} placeholder="Enter Password"/>
                                 <label htmlFor="desc"><b>Introduce Yourself!</b></label>
-                                <input type="text" name="desc" className="su-iy" placeholder="Required"/>
+                                <input type="text" name="desc" className="su-iy" onChange={this.descChange.bind(this)} placeholder="Required"/>
                                 <button type='button' className="signup" onClick={this.signUpFunc.bind(this)} >Sign Up</button>
                             </form>
                         </div>

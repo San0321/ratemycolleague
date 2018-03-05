@@ -22,7 +22,6 @@ export default class SearchedResultLists extends React.Component {
     return (
         <div>
             <li>{this.state.li}
-                  <a/>
             </li>
         </div>
 
