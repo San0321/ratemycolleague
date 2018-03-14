@@ -37,16 +37,19 @@ class Searched extends Component {
 		}
 		debugger;
 		this.state.Searched = this.props.Searched;
-		for(let i=0; i < this.props.UserData.length; ++i)
-		{
-			if(this.props.UserData[i].Name === this.props.Current)
+		if(this.props.UserData) {
+			for(let i=0; i < this.props.UserData.length; ++i)
 			{
-				for(let j=0; j < this.props.UserData[i].Evaluation.length; ++j)
+				if(this.props.UserData[i].Name === this.props.Current)
 				{
-					this.state.Evaluation.push(this.props.UserData[i].Evaluation[j]);
+					for(let j=0; j < this.props.UserData[i].Evaluation.length; ++j)
+					{
+						this.state.Evaluation.push(this.props.UserData[i].Evaluation[j]);
+					}
 				}
 			}
 		}
+		
 		this.setState(this.state);
     }
 	
@@ -246,6 +249,12 @@ class Searched extends Component {
 		let inputReview = prompt("Enter your evaluation");
 		this.props.addEvaluation(this.props.Searched[0].Name, inputReview);
 	}
+	toHome() {
+		this.props.history.push({pathname: '/'});
+	  }
+	toProfile() {
+		this.props.history.push({pathname: '/profile'});
+	}
 	
 	render() {
 
@@ -265,7 +274,7 @@ class Searched extends Component {
 				<header>
 
 					<div className="topnav" id="myTopnav">
-						<Link to={'/'}>Home</Link>
+						<a onClick={this.toHome.bind(this)}>Home</a>
 						<a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}} id="signInModal">Sign In</a>
 	  					<a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}} id ="signUpModal">Sign Up</a>
 								<a href="profile.html" id='profile' style={{display: this.state.profileState}}>Profile</a>
@@ -299,9 +308,11 @@ class Searched extends Component {
 					<div>
 						<ul>
 							<div className="results">
-								{this.state.Searched.map(item => (
-									<SearchedResultList key={item.Name} data={item}/>
-								))}
+								
+									{this.state.Searched ? this.state.Searched.map(item => (
+										<SearchedResultList key={item.Name} data={item}/>
+									)) : ""}
+									
 							</div>
 						
 
@@ -310,7 +321,8 @@ class Searched extends Component {
 				</nav>
 				<article>
 					<div className = "section">
-						<SearchedResults item={this.state.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/>
+					{this.state.Searched ? <SearchedResults item={this.state.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/> : ""}
+						
 					</div>
 				</article>
 			<div id='modal1' className="modal1" style={{display:this.state.modal1State}}>

@@ -17,34 +17,42 @@ class Profile extends React.Component{
     	messageList: [],
     	groupMember: [],
     	invitationList: []
-    };
-    for(let i=0; i < this.props.Invitation.length; ++i)
-	{
-		if(this.props.Invitation[i].To === this.state.myName)
+	};
+	if(this.props.Invitation) {
+		for(let i=0; i < this.props.Invitation.length; ++i)
 		{
-			this.state.invitationList.push(this.props.Invitation[i]);
-		}
-	}
-
-	for(let i=0; i < this.props.Message.length; ++i)
-	{
-		if(this.props.Message[i].To === this.state.myName)
-		{
-			this.state.messageList.push(this.props.Message[i]);
-		}
-	}
-
-	for(let i=0; i < this.props.UserData.length; ++i)
-	{
-		if(this.props.UserData[i].Name === this.state.myName)
-		{
-			for(let j=0; j < this.props.UserData[i].Member.length; ++j)
+			if(this.props.Invitation[i].To === this.state.myName)
 			{
-				this.state.groupMember.push(this.props.UserData[i].Member[j]);
+				this.state.invitationList.push(this.props.Invitation[i]);
 			}
-			break;
 		}
 	}
+	
+	if(this.props.Message) {
+		for(let i=0; i < this.props.Message.length; ++i)
+		{
+			if(this.props.Message[i].To === this.state.myName)
+			{
+				this.state.messageList.push(this.props.Message[i]);
+			}
+		}
+	}
+
+	if(this.props.UserData) {
+		for(let i=0; i < this.props.UserData.length; ++i)
+		{
+			if(this.props.UserData[i].Name === this.state.myName)
+			{
+				for(let j=0; j < this.props.UserData[i].Member.length; ++j)
+				{
+					this.state.groupMember.push(this.props.UserData[i].Member[j]);
+				}
+				break;
+			}
+		}
+	}
+
+	
     this.myMessage = this.myMessage.bind(this);
     this.myInvitation = this.myInvitation.bind(this);
     this.myGroup = this.myGroup.bind(this);
@@ -193,7 +201,7 @@ class Profile extends React.Component{
   	{
   	  return (
   	  	<div>
-  	  	<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup}/>
+  	  	<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup}/>
   	  	<ul>
   	  	{
   	  		this.state.messageList.map((item, index) => {
@@ -216,7 +224,7 @@ class Profile extends React.Component{
   	{
   		return (
   			<div>
-  			<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription}/>
+  			<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription}/>
   			<ul>
   			{
   				this.state.invitationList.map((item, index) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import {browserHistory} from 'react-router-dom';
-import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 
 import './index.css';
 
@@ -214,12 +214,17 @@ class Homepage extends Component {
       this.props.history.push({pathname: '/searched'});
       
     //  debugger;
-   // <Link to= {{pathname: '/searched'}}/>
       //browserHistory.push({pathname: '/searched', state: this.props})
     
   }
+  toHome() {
+    this.props.history.push({pathname: '/'});
+  }
+  toProfile() {
+    this.props.history.push({pathname: '/profile'});
+  }
 
-// <a className="active"><Link to={'/'}>Home</Link></a>
+
     
   render() {
 
@@ -239,11 +244,10 @@ class Homepage extends Component {
         </header>
         <nav>
             <div className="topnav" id="myTopnav">
-                
-                <Link to={'/'}>Home</Link>
+                <a onClick={this.toHome.bind(this)}>Home</a>
                 <a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}}  id="signInModal">Sign In</a>
                 <a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}}  id="signUpModal">Sign Up</a>
-                <Link style={{display: this.state.profileState}} to={'/profile'}>Profile</Link>      
+                <a style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>      
                 <a href="#" id="logoutButton" onClick={this.signOut.bind(this)} style={{display: this.state.logOutState}}>Log Out</a>
                 <a href="javascript:void(0);" style={topnavStyle} className="icon" onClick={this.dropDown.bind(this)}>&#9776;</a>
             </div>

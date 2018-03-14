@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import { App } from './App';
 import { Profile } from './Profile';
 import { Link } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 
 class ProfileRendered extends React.Component{
+	toHome() {
+		debugger;
+		this.props.history.push({pathname: '/'});
+	  }
 	render(){
 		return (
 		<div className="container">
@@ -12,7 +17,7 @@ class ProfileRendered extends React.Component{
      	<header>
 
        	<div className="topnav" id="myTopnav">
-       	<Link to={'/'}>Home</Link>
+		<a onClick={this.toHome.bind(this)}>Home</a>
        	<a href="#" id="logoutButton" onClick={this.props.signOut}>Log Out</a>
        	<a href="javascript:void(0);" style={{fontSize:'15px'}} className="icon" onClick={this.props.dropDown}>&#9776;</a>
      	</div>
@@ -33,7 +38,7 @@ class ProfileRendered extends React.Component{
 		</nav>
 
 		<article>
-  		<div class="article-section">
+  		<div className="article-section">
       		<h1>About Myself</h1>
     		<p>{this.props.myDescription}</p>
   		</div>
