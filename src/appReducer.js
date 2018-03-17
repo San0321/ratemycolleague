@@ -1,14 +1,72 @@
-import {createStore, combineReducers, applyMiddleware} from "redux";
+import {createStore, combineReducers} from "redux";
 import logger from "redux-logger";
 import App from "./App";
 
-const appReducer = (state = initialState, action) => {
+const initialState = {
+      Invitation: [{
+        From: "A",
+        To: "Rick"
+      }],
+      Message: [{
+        From: "Morty",
+        To: "Rick",
+        Content: "Hello World"
+      }],
+      UserData: [{
+        Name: "Rick",
+        Id: "dorat",
+        Password: "1234",
+        Description: "Hi, my name is Rick. I have experience on web front-end development. I have used React.js and CSS to develop some websites.",
+        Position: "",
+        Endorsement: "",
+        Evaluation: [],
+        Picture: "profile.png",
+        Skill: ["React.js", "CSS"],
+        Member: [],
+        Email: "rick@ucsd.edu"
+      },
+      {
+        Name: "Morty",
+        Id: "something",
+        Password: "1234",
+        Description: "Hi, my name is Morty. I have experience on web back-end development. I have used Node.js and PHP to develop some websites.",
+        Position: "",
+        Evaluation: [],
+        Endorsement: "",
+        Picture: "",
+        Skill: ["PHP", "Node.js"],
+        Class: [],
+        Email: "morty@ucsd.edu",
+        Member: []
+      },
+      {
+        Name: "Rick and Morty",
+        Id: "rickmorty",
+        Password: "1234",
+        Description: "Hi, my name is Rick and Morty. I have experience on web back-end development. I have used Node.js and PHP to develop some websites.",
+        Position: "",
+        Endorsement: "",
+        Evaluation: [],
+        Picture: "RM_profile.png",
+        Skill: ["PHP", "Node.js"],
+        Class: [],
+        Email: "morty@ucsd.edu",
+        Member: []
+      }],
+      Current: null, // Name
+      Search:"",
+      SearchItem:"",
+      Searched: [],
+       
+    };
+
+export const appReducer = (state = initialState, action) => {
 	switch (action.type){
 		case "addEvaluation":
 			var targetIndex = -1;
 			for(let i=0; i < state.UserData.length; ++i)
 			{
-				if(state.UserData[i].Name === to)
+				if(state.UserData[i].Name === action.to)
 				{
 					targetIndex = i;
 				}
@@ -17,7 +75,7 @@ const appReducer = (state = initialState, action) => {
 			{
 				state = {
 					...state,
-					UserData: state.UserData[targetIndex].Evaluation.push(action.in_review);
+					UserData: state.UserData[targetIndex].Evaluation.push(action.in_review)
 				};
 			}
 			else
@@ -31,7 +89,7 @@ const appReducer = (state = initialState, action) => {
 		case "replyMessage":
 			state = {
 				...state,
-				state.Message: [...state.Message, 
+				Message: [...state.Message, 
 								{
 									From: action.from,
 									To: action.to,
@@ -53,7 +111,7 @@ const appReducer = (state = initialState, action) => {
   			}
   			state = {
   				...state,
-  				state.Message: [...tempMessage]
+  				Message: [...tempMessage]
   			};
   			break;
 
@@ -69,20 +127,19 @@ const appReducer = (state = initialState, action) => {
         				++counter;
       				}
     			}
-    		}
-    		else if(state.UserData[i].Name === action.to)
-   			{
-      			if(state.UserData[i].Member.indexOf(action.from)  == -1)
-      			{
-        			state.UserData[i].Member.push(action.from);
-        			++counter;
-      			}
-    		}
-    		else
-    		{
+    		  else if(state.UserData[i].Name === action.to)
+   			  {
+      			 if(state.UserData[i].Member.indexOf(action.from)  == -1)
+      			 {
+        		  	state.UserData[i].Member.push(action.from);
+        			 ++counter;
+      			 }
+    		  }
+    		  else
+    		  {
       			//dummy
-    		}
-
+    		  }
+        }  
     		if(2 <= counter)
     		{
       			break;
@@ -147,6 +204,60 @@ const appReducer = (state = initialState, action) => {
   				...state
   			};
   			break;
+      case "SignUps":
+        state = {
+          ...state,
+          UserData: state.UserData.push(action.newObject)
+        };
+        break;
+
+      case "LoggedIn":
+        for(let a = 0; a < state.UserData.length; a++) {
+          if(action.username === state.UserData[a].Id) {
+            state = {
+              ...state,
+              Current: state.UserData[a].Name
+            }
+          }
+        }
+        break;
+
+      case "Searching":
+
+        state.Searched = [];
+        state.Search = action.value;
+
+        for(let a = 0; a < state.UserData.length; a++ ) {
+
+          if(state.UserData[a].Name.toLowerCase() === action.value.toLowerCase()) {
+            state = {
+              ...state,
+              Searched: state.Search.push(state.UserData[a])
+            };
+
+          }
+          
+        }
+
+        for(let b = 0; b < state.UserData.length; b++ ) {
+           if(state.UserData[b].Name.toLowerCase().includes(action.value.toLowerCase()) && state.UserData[b].Name.toLowerCase() !== action.value.toLowerCase()) {
+             state = {
+               ...state,
+               Searched: state.Search.push(state.UserData[b])
+             };
+           }
+         }
+
+        break;
+
+      case "LogOut":
+
+        state = {
+          ...state,
+          Current: null
+        };
+        break;
+
   		default: 
   			state = {
   				...state
@@ -156,5 +267,4 @@ const appReducer = (state = initialState, action) => {
 	return state;
 };
 
-const store = createStore(combineReducers({appReducer}), {}, applyMiddleWare(logger()));
-
+export const store = createStore(combineReducers({appReducer}), {});

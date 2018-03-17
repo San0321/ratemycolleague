@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 //import {browserHistory} from 'react-router-dom';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
-
+import {connect} from 'react-redux';
 import './index.css';
 
 
-class Homepage extends Component {
+export class Homepage extends Component {
     constructor() {
         super();
         this.state = {
@@ -68,7 +68,7 @@ class Homepage extends Component {
     }
 
     componentWillMount() {
-        if(this.props.Current != null) {
+        if(this.props.app.Current != null) {
             this.signingCheck(true);
         }
         else {
@@ -88,11 +88,11 @@ class Homepage extends Component {
         let flag = true;
        // this.props.UserData[0].Id
         debugger;
-        for(let a = 0; a < this.props.UserData.length; a++) {
+        for(let a = 0; a < this.props.app.UserData.length; a++) {
             // check id
-            if( this.props.UserData[a].Id === un) {
+            if( this.props.app.UserData[a].Id === un) {
                 // check pw when id is present
-                if(this.props.UserData[a].Password === pw) {
+                if(this.props.app.UserData[a].Password === pw) {
 
                     // saves to parent
                     
@@ -133,8 +133,8 @@ class Homepage extends Component {
         
         let flag = true;
 
-        for(let a = 0; a < this.props.UserData.length; a++) {
-            if(this.props.UserData[a].Id === username) {
+        for(let a = 0; a < this.props.app.UserData.length; a++) {
+            if(this.props.app.UserData[a].Id === username) {
                 alert("This username is already taken. Please pick different username");
                 flag = false;
             }
@@ -163,7 +163,7 @@ class Homepage extends Component {
 
     signOut() {
        // debugger;
-        if(this.props.Current != null) {
+        if(this.props.app.Current != null) {
             this.props.LogOut();
             this.signingCheck(false);
         }
@@ -348,5 +348,39 @@ We want you to find best team-mate for your group work.
     );
   }
 }
+const mapStateToProps = (state) => {
+    return {
+        app: state.appReducer
+    };
+};
 
-export default Homepage;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        SignUps: (newObject) => {
+            dispatch({
+                type: "SignUps",
+                newObject: newObject
+            });
+        },
+        LoggedIn: (username) => {
+            dispatch({
+                type: "LoggedIn",
+                username: username
+            });
+        },
+        Searching: (value) => {
+            dispatch({
+                type: "Searching",
+                value: value
+            });
+        },
+        LogOut: () => {
+            dispatch({
+                type: "LogOut"
+            })
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
+

@@ -3,9 +3,10 @@ import SearchedResultList from './SearchedResultLists.js';
 import SearchedResults from './SearchedResults.js';
 import './searched.css';
 import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 
-class Searched extends Component {
+export class Searched extends Component {
 	constructor() {
         super();
         this.state = {
@@ -108,11 +109,11 @@ class Searched extends Component {
         let flag = true;
        // this.props.UserData[0].Id
         debugger;
-        for(let a = 0; a < this.props.UserData.length; a++) {
+        for(let a = 0; a < this.props.app.UserData.length; a++) {
             // check id
-            if( this.props.UserData[a].Id === un) {
+            if( this.props.app.UserData[a].Id === un) {
                 // check pw when id is present
-                if(this.props.UserData[a].Password === pw) {
+                if(this.props.app.UserData[a].Password === pw) {
 
                     // saves to parent
                     
@@ -165,7 +166,7 @@ class Searched extends Component {
         let flag = true;
 
         for(let a = 0; a < this.props.UserData.length; a++) {
-            if(this.props.UserData[a].Id === username) {
+            if(this.props.app.UserData[a].Id === username) {
                 alert("This username is already taken. Please pick different username");
                 flag = false;
             }
@@ -380,4 +381,61 @@ class Searched extends Component {
 			
 }
 
-export default Searched;
+const mapStateToProps = (state) => {
+    return {
+        app: state.appReducer
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        SignUps: (newObject) => {
+            dispatch({
+                type: "SignUps",
+                newObject: newObject
+            });
+        },
+        LoggedIn: (username) => {
+            dispatch({
+                type: "LoggedIn",
+                username: username
+            });
+        },
+        Searching: (value) => {
+            dispatch({
+                type: "Searching",
+                value: value
+            });
+        },
+        LogOut: () => {
+            dispatch({
+                type: "LogOut"
+            })
+        },
+        addEvaluation: (to, in_review) => {
+			dispatch({
+				type: "addEvaluation",
+				to: to,
+				in_review: in_review
+			});
+		},
+		replyMessage: (from, to, message) => {
+			dispatch({
+				type: "replyMessage",
+				to: to,
+				from: from,
+				message: message
+			});
+		},
+		addInvitation: (from, to) => {
+			dispatch({
+				type: "addInvitation",
+				to: to,
+				from: from
+			});
+		}
+
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Searched);
