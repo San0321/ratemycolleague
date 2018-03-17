@@ -15,8 +15,6 @@ import { syncHistoryWithStore, routeReducer } from 'react-router-redux';
 
 class App extends Component {
 
-  
-  
   render() {
     return (
       <div className="currentPage">

@@ -16,7 +16,8 @@ export class Profile extends React.Component{
     	showInvitation: false,
     	messageList: [],
     	groupMember: [],
-    	invitationList: []
+    	invitationList: [],
+      index: 0
 	};
 
 	if(this.props.app.Invitation) 
@@ -47,6 +48,7 @@ export class Profile extends React.Component{
 		{
 			if(this.props.app.UserData[i].Name === this.state.myName)
 			{
+        this.state.index = i;
 				for(let j=0; j < this.props.app.UserData[i].Member.length; ++j)
 				{
 					this.state.groupMember.push(this.props.app.UserData[i].Member[j]);
@@ -160,6 +162,7 @@ export class Profile extends React.Component{
   	}
 
   	handleAccept(e){
+      debugger;
   		let exist = false;
   		let input = e.target.name.split("@");
   		let intIndex = parseInt(input[2]);
@@ -175,13 +178,18 @@ export class Profile extends React.Component{
     	this.state.invitationList.splice(intIndex, 1);
     	if(!exist)
     	{
+        this.state.groupMember = this.state.groupMember.push(input[0]);
+        this.render();
+/*
   			this.setState({invitationList: this.state.invitationList,
   							groupMember: this.state.groupMember.push(input[0])});
+                */
     	}
     	else
     	{
     		this.setState({invitationList: this.state.invitationList});
     	}
+      debugger;
   	}
 
   	handleDecline(e){
@@ -200,6 +208,7 @@ export class Profile extends React.Component{
   		this.setState({groupMember: this.state.groupMember});
   	}
 	render(){
+    debugger;
   		if(this.state.showMessage)
   		{
   	  	return (
@@ -248,12 +257,13 @@ export class Profile extends React.Component{
   			<div>
   			<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription}/>
   			<ul>
-  			{
-  				this.state.groupMember.map((item, index) => {
-  					let stringIndex = index.toString();
-  					let inputString = item + "@" + stringIndex;
-  					return (<li>{item} <button name={inputString} onClick={this.handleDeleteMember}>Delete</button> </li>);
-  				})
+        {
+           this.props.app.UserData[this.state.index].Member.map((item, index) => {
+                    let stringIndex = index.toString();
+                    let inputString = item + "@" + stringIndex;
+                    return (<li>{item} <button name={inputString} onClick={this.handleDeleteMember}>Delete</button> </li>);
+                })
+          } 
   			}
   			</ul>
   			<button onClick={this.toggleShowGroup}>Close</button>

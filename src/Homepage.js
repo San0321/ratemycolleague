@@ -210,6 +210,7 @@ export class Homepage extends Component {
         
       };
       */
+     debugger;
       this.props.Searching(e.target[0].value);
       this.props.history.push({pathname: '/searched'});
       

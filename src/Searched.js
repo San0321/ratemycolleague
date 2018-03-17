@@ -30,22 +30,23 @@ export class Searched extends Component {
 	}
 
 	componentWillMount() {
-        if(this.props.Current != null) {
+		debugger;
+        if(this.props.app.Current != null) {
             this.signingCheck(true);
         }
         else {
             this.signingCheck(false);
 		}
 		debugger;
-		this.state.Searched = this.props.Searched;
-		if(this.props.UserData) {
-			for(let i=0; i < this.props.UserData.length; ++i)
+		this.state.Searched = this.props.app.Searched;
+		if(this.props.app.UserData) {
+			for(let i=0; i < this.props.app.UserData.length; ++i)
 			{
-				if(this.props.UserData[i].Name === this.props.Current)
+				if(this.props.app.UserData[i].Name === this.props.app.Current)
 				{
-					for(let j=0; j < this.props.UserData[i].Evaluation.length; ++j)
+					for(let j=0; j < this.props.app.UserData[i].Evaluation.length; ++j)
 					{
-						this.state.Evaluation.push(this.props.UserData[i].Evaluation[j]);
+						this.state.Evaluation.push(this.props.app.UserData[i].Evaluation[j]);
 					}
 				}
 			}
@@ -150,7 +151,7 @@ export class Searched extends Component {
 
     signOut() {
 		// debugger;
-		 if(this.props.Current != null) {
+		 if(this.props.app.Current != null) {
 			 this.props.LogOut();
 			 this.signingCheck(false);
 		 }
@@ -165,7 +166,7 @@ export class Searched extends Component {
         
         let flag = true;
 
-        for(let a = 0; a < this.props.UserData.length; a++) {
+        for(let a = 0; a < this.props.app.UserData.length; a++) {
             if(this.props.app.UserData[a].Id === username) {
                 alert("This username is already taken. Please pick different username");
                 flag = false;
@@ -228,7 +229,7 @@ export class Searched extends Component {
 	  }
 	  componentWillUpdate (nextProps) {
 		  debugger;
-		  this.state.Searched = nextProps.Searched;
+		 // this.state.Searched = nextProps.Searched;
 		  //this.props.history.push({pathname: '/searched'});
 		 // this.setState(this.state);
 		// do whatever clean up you need before rerendering
@@ -236,19 +237,19 @@ export class Searched extends Component {
 	 }
 
 	handleAddInvitation(){
-		this.props.addInvitation(this.props.Current, this.props.Searched[0].Name);
+		this.props.addInvitation(this.props.app.Current, this.props.app.Searched[0].Name);
 		alert("Your Invitation has been sent!");
 	}
 	
 	handleSendMessage(){
 		let userMessage = prompt("Enter a message");
-		this.props.replyMessage(this.props.Current, this.props.Searched[0].Name, userMessage);
+		this.props.replyMessage(this.props.app.Current, this.props.app.Searched[0].Name, userMessage);
 		alert("Your Message has been sent!");
 	}
 
 	handleWriteEvaluation(){
 		let inputReview = prompt("Enter your evaluation");
-		this.props.addEvaluation(this.props.Searched[0].Name, inputReview);
+		this.props.addEvaluation(this.props.app.Searched[0].Name, inputReview);
 	}
 	toHome() {
 		this.props.history.push({pathname: '/'});
@@ -278,7 +279,7 @@ export class Searched extends Component {
 						<a onClick={this.toHome.bind(this)}>Home</a>
 						<a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}} id="signInModal">Sign In</a>
 	  					<a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}} id ="signUpModal">Sign Up</a>
-								<a href="profile.html" id='profile' style={{display: this.state.profileState}}>Profile</a>
+								<a href="#" id='profile' style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>
 								<a href="#" id="logoutButton" onClick={this.signOut.bind(this)}>Log Out</a>
 	  					 <a href="javascript:void(0);" style={topnavStyle} className="icon" onClick={this.dropDown.bind(this)}>&#9776;</a>
 					</div>

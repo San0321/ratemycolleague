@@ -20,7 +20,7 @@ const initialState = {
         Position: "",
         Endorsement: "",
         Evaluation: [],
-        Picture: "profile.png",
+        Picture: "./profile.png",
         Skill: ["React.js", "CSS"],
         Member: [],
         Email: "rick@ucsd.edu"
@@ -47,7 +47,7 @@ const initialState = {
         Position: "",
         Endorsement: "",
         Evaluation: [],
-        Picture: "RM_profile.png",
+        Picture: "./RM_profile.png",
         Skill: ["PHP", "Node.js"],
         Class: [],
         Email: "morty@ucsd.edu",
@@ -117,33 +117,36 @@ export const appReducer = (state = initialState, action) => {
 
   		case "acceptInvitation":
   			let counter = 0;
+        debugger;
   			for(let i=0; i < state.UserData.length; ++i)
   			{
-    			if(state.UserData[i].Name === action.from)
-    			{
-      				if(state.UserData[i].Member.indexOf(action.to)  == -1)
-      				{
-      					state.UserData[i].Member.push(action.to);
-        				++counter;
-      				}
-    			}
-    		  else if(state.UserData[i].Name === action.to)
-   			  {
-      			 if(state.UserData[i].Member.indexOf(action.from)  == -1)
-      			 {
-        		  	state.UserData[i].Member.push(action.from);
-        			 ++counter;
-      			 }
-    		  }
-    		  else
-    		  {
+    			 if(state.UserData[i].Name === action.from)
+    			 {
+      				  if(state.UserData[i].Member.indexOf(action.to)  == -1)
+      				  {
+      					 state.UserData[i].Member.push(action.to);
+        				  ++counter;
+      				  }
+    			 }
+    		   else if(state.UserData[i].Name === action.to)
+   			   {
+      			   if(state.UserData[i].Member.indexOf(action.from)  == -1)
+      			   {
+        		  	 state.UserData[i].Member.push(action.from);
+        			   ++counter;
+      			   }
+    		   }
+    		   else
+    		   {
       			//dummy
-    		  }
-        }  
-    		if(2 <= counter)
-    		{
-      			break;
-    		}
+    		   }
+           if(2 <= counter)
+           {
+              break;
+           }
+        } 
+        debugger; 
+
     		state = {
     			...state
     		};
@@ -230,10 +233,9 @@ export const appReducer = (state = initialState, action) => {
         for(let a = 0; a < state.UserData.length; a++ ) {
 
           if(state.UserData[a].Name.toLowerCase() === action.value.toLowerCase()) {
-            state = {
-              ...state,
-              Searched: state.Search.push(state.UserData[a])
-            };
+            
+              state.Searched.push(state.UserData[a])
+            
 
           }
           
@@ -241,13 +243,13 @@ export const appReducer = (state = initialState, action) => {
 
         for(let b = 0; b < state.UserData.length; b++ ) {
            if(state.UserData[b].Name.toLowerCase().includes(action.value.toLowerCase()) && state.UserData[b].Name.toLowerCase() !== action.value.toLowerCase()) {
-             state = {
-               ...state,
-               Searched: state.Search.push(state.UserData[b])
-             };
+               state.Searched.push(state.UserData[b])
+             
            }
          }
-
+        state = {
+          ...state
+        };
         break;
 
       case "LogOut":
