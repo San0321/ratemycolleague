@@ -321,7 +321,7 @@ export class Searched extends Component {
 						</ul>
 					</div>
 				</nav>
-				<article>
+				<article className="Search">
 					<div className = "section">
 					{this.state.Searched ? <SearchedResults item={this.state.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/> : ""}
 						

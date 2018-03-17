@@ -76,11 +76,12 @@ export class Homepage extends Component {
         }
     }
     dropDown() {
+        debugger;
     	var x = document.getElementById("myTopnav");
-    	if (x.className === "topnav") {
+    	if (x.className === "topnavHomepage") {
         	x.className += " responsive";
     	} else {
-        	x.className = "topnav";
+        	x.className = "topnavHomepage";
     	}
 	}
 
@@ -173,14 +174,14 @@ export class Homepage extends Component {
     
 
   changeState() {
-    if(this.state.modal1On == true) {
+    if(this.state.modal1On === true) {
         this.state.modal1State = 'block';
     }
     else {
         this.state.modal1State = 'none';
     }
 
-    if(this.state.modal2On == true) {
+    if(this.state.modal2On === true) {
         this.state.modal2State = 'block';
     }
     else {
@@ -241,25 +242,26 @@ export class Homepage extends Component {
       }
     return (
     <div className="bodyHomepage">
-        <header>
+        <header className="headerHomepage">
+            
+                <div className="topnavHomepage" id="myTopnav">
+                    <a onClick={this.toHome.bind(this)} className="activeHomepage">Home</a>
+                    <a  onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}}  id="signInModal">Sign In</a>
+                    <a  onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}}  id="signUpModal">Sign Up</a>
+                    <a style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>      
+                    <a  id="logoutButton" onClick={this.signOut.bind(this)} style={{display: this.state.logOutState}}>Log Out</a>
+                    <a href="javascript:void(0);" style={topnavStyle} className="icon" onClick={this.dropDown.bind(this)}>&#9776;</a>
+                </div>
+            
         </header>
-        <nav>
-            <div className="topnav" id="myTopnav">
-                <a onClick={this.toHome.bind(this)}>Home</a>
-                <a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}}  id="signInModal">Sign In</a>
-                <a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}}  id="signUpModal">Sign Up</a>
-                <a style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>      
-                <a href="#" id="logoutButton" onClick={this.signOut.bind(this)} style={{display: this.state.logOutState}}>Log Out</a>
-                <a href="javascript:void(0);" style={topnavStyle} className="icon" onClick={this.dropDown.bind(this)}>&#9776;</a>
-            </div>
-        </nav>
+        
         <section>
             <br/>
 
             <div className="container" id="searchDiv">
                 <form onSubmit={this.searching.bind(this)}>
                     <input type="search" name="searched"/>
-                    <button type='submit' className="buttons" id="buttons">Search</button>
+                    <button type='submit' className="buttonsHomepage" id="buttons">Search</button>
                 
                     <input type="radio" id="searchChoice1"
                     name="search" value="Name" defaultChecked/>
@@ -281,9 +283,9 @@ export class Homepage extends Component {
 
         <article>
             <h1>Welcome to our website!</h1>
-            <p>Our website allows you to search people who are qualified for your team-work project</p>
+            <p className="Homepage">Our website allows you to search people who are qualified for your team-work project</p>
             <div className="parallax"></div>
-            <div style={homepageStyle} className="caption">
+            <div style={homepageStyle} className="captionHomepage">
                 <span className="border">
 We want you to find best team-mate for your group work.
         </span>
@@ -311,7 +313,7 @@ We want you to find best team-mate for your group work.
                         </div>
                         <div className="container" style={moduleContainerStyle}>
                             <button type="button" onClick={this.closeOnClick.bind(this)} className="cancelbtn">Cancel</button>
-                            <span className="psw">Forgot <a href="#">password?</a></span>
+                            <span className="psw">Forgot <a>password?</a></span>
                         </div>
 	            </div>
             </div>
@@ -339,7 +341,7 @@ We want you to find best team-mate for your group work.
                         </div>
                         <div className="container" style={moduleContainerStyle}>
                             <button type="button" onClick={this.closeOnClick.bind(this)} className="cancelbtn">Cancel</button>
-                            <span className="psw">Forgot <a href="#">password?</a></span>
+                            <span className="psw">Forgot <a>password?</a></span>
                         </div>
                 </div>
             </div>
