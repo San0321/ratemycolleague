@@ -275,8 +275,8 @@ export class Searched extends Component {
 			<div className="searchbody">
 				<header>
 
-					<div className="topnav" id="myTopnav">
-						<a onClick={this.toHome.bind(this)}>Home</a>
+					<div className="topnavsearch" id="myTopnav">
+						<a onClick={this.toHome.bind(this)} className="activesearch">Home</a>
 						<a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}} id="signInModal">Sign In</a>
 	  					<a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}} id ="signUpModal">Sign Up</a>
 								<a href="#" id='profile' style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>
@@ -321,7 +321,7 @@ export class Searched extends Component {
 						</ul>
 					</div>
 				</nav>
-				<article className="Search">
+				<article id="Search">
 					<div className = "section">
 					{this.state.Searched ? <SearchedResults item={this.state.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/> : ""}
 						
