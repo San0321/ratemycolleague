@@ -52,38 +52,85 @@ const initialState = {
         Class: [],
         Email: "morty@ucsd.edu",
         Member: []
+      },
+      {
+        Name: "Issac Chu",
+        Id: "cse134",
+        Password: "1234",
+        Description: "Hello! I am Issac Chu",
+        Position: "Professor",
+        Endorsement: "",
+        Evaluation: [],
+        Picture: "",
+        Skill: ["CSE134", "CSE141"],
+        Class: [].
+        Email: "ichu@ucsd.edu",
+        Member: []
       }],
       Current: null, // Name
       Search:"",
       SearchItem:"",
       Searched: []
-       
-    };
+  }
 
 export const appReducer = (state = initialState, action) => {
 	switch (action.type){
+    case "acceptEval":
+      for(let i=0; i < state.UserData.length; ++i)
+      {
+        if(state.UserData[i].Name === action.to)
+        {
+          state.UserData[i].Evaluation.push(action.review);
+          break;
+        }
+        if(state.UserData[i].Position === "Professor")
+        {
+          for(let j=0; j < state.UserData[i].Evaluation.length; ++j)
+          {
+            if(state.UserData[i].Evaluation[j].to === action.to && state.UserData[i].Evaluation[j].review === action.review)
+            {
+              state.UserData[i].Evaluation.splice(j, 1);
+            }
+          }
+        }
+      }
+      state = {
+        ...state
+      };
+      break;
+
+    case "declineEval":
+      for(let i=0; i < state.UserData.length; ++i)
+      {
+        if(state.UserData[i].Position === "Professor")
+        {
+          for(let j=0; j < state.UserData[i].Evaluation.length; ++j)
+          {
+            if(state.UserData[i].Evaluation[j].to === action.to && state.UserData[i].Evaluation[j].review === action.review)
+            {
+              state.UserData[i].Evaluation.splice(j, 1);
+              break;
+            }
+          }
+          break;
+        }
+      }
+      state = {
+        ...state
+      };
+      break;
+      
 		case "addEvaluation":
-			var targetIndex = -1;
 			for(let i=0; i < state.UserData.length; ++i)
-			{
-				if(state.UserData[i].Name === action.to)
-				{
-					targetIndex = i;
-				}
-			}
-			if(targetIndex != -1)
-			{
-				state = {
-					...state,
-					UserData: state.UserData[targetIndex].Evaluation.push(action.in_review)
-				};
-			}
-			else
-			{
-				state= {
-					...state
-				}
-			}
+      {
+        if(state.UserData[i].Position === "Professor")
+        {
+          state.UserData[i].Evaluation.push({to: action.to, review: action.in_review});
+        }
+      }
+      state = {
+        ...state
+      };
 			break;
 
 		case "replyMessage":

@@ -35,6 +35,7 @@ class ProfileRendered extends React.Component{
     		<button onClick={this.props.myInvitation}>View Invitation</button>
     		<button onClick={this.props.myMessage}>Read Message</button>
     		<button onClick={this.props.myGroup}>View My Group</button>
+        <button onClick={this.props.myEvaluation}>View Evaluation</button>
   		</ul>
 		</nav>
 

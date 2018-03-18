@@ -14,11 +14,12 @@ export class Profile extends React.Component{
     	showGroup: false,
     	showMessage: false,
     	showInvitation: false,
+      showEvaluation: false,
     	messageList: [],
     	groupMember: [],
     	invitationList: [],
       index: 0
-	};
+	  };
 
 	if(this.props.app.Invitation) 
 	{
@@ -62,6 +63,7 @@ export class Profile extends React.Component{
     this.myMessage = this.myMessage.bind(this);
     this.myInvitation = this.myInvitation.bind(this);
     this.myGroup = this.myGroup.bind(this);
+    this.toggleShowEvaluation = this.toggleShowEvaluation.bind(this);
     this.toggleShowMessage = this.toggleShowMessage.bind(this);
     this.toggleShowInvitation = this.toggleShowInvitation.bind(this);
     this.toggleShowGroup = this.toggleShowGroup.bind(this);
@@ -70,9 +72,16 @@ export class Profile extends React.Component{
     this.handleAccept = this.handleAccept.bind(this);
     this.handleDecline = this.handleDecline.bind(this);
     this.handleDeleteMember = this.handleDeleteMember.bind(this);
+    this.handleDeclineEval = this.handleDeclineEval.bind(this);
+    this.handleAcceptEval = this.handleAcceptEval.bind(this);
   }
 	
 	myMessage(){
+      if(this.state.showEvaluation)
+      {
+        this.state.showEvaluation = false;
+      }
+
   		if(this.state.showGroup)
   		{
   			this.state.showGroup = false;
@@ -85,15 +94,20 @@ export class Profile extends React.Component{
 
   		if(this.state.messageList.length < 1)
   		{
-  	    	alert("No messages!");
+  	    alert("No messages!");
   		}
   		else
   		{
-        	this.setState({showMessage: true});
+        this.setState({showMessage: true});
   		}
   	}
 
-	myInvitation(){
+	  myInvitation(){
+      if(this.state.showEvaluation)
+      {
+        this.state.showEvaluation = false;
+      }
+
   		if(this.state.showGroup)
   		{
   			this.state.showGroup = false;
@@ -101,41 +115,77 @@ export class Profile extends React.Component{
 
   		if(this.state.showMessage)
   		{
-  			this.state.showGroup = false;
+  			this.state.showMessage = false;
   		}
 
   		if(this.state.invitationList.length < 1)
   		{
-  	    	alert("No invitations!");
+  	    alert("No invitations!");
   		}
   		else
   		{
-        	this.setState({showInvitation: true});
+        this.setState({showInvitation: true});
   		}
   	}
 
   	myGroup(){
+      if(this.state.showEvaluation)
+      {
+        this.state.showEvaluation = false;
+      }
+
   		if(this.state.showInvitation)
   		{
-  			this.state.showGroup = false;
+  			this.state.showInvitation = false;
   		}
 
   		if(this.state.showMessage)
   		{
-  			this.state.showGroup = false;
+  			this.state.showMessage = false;
   		}
 
   		if(this.state.groupMember.length < 1)
   		{
-  	    	alert("No groups!");
+  	    alert("No groups!");
   		}
   		else
   		{
-        	this.setState({showGroup: true});
+        this.setState({showGroup: true});
   		}
   	}
 
-	toggleShowMessage(){
+    myEvaluation(){
+      if(this.state.showInvitation)
+      {
+        this.state.showInvitation = false;
+      }
+
+      if(this.state.showMessage)
+      {
+        this.state.showMessage = false;
+      }
+
+      if(this.state.showGroup)
+      {
+        this.state.showGroup = false;
+      }
+
+      if(this.props.app.UserData[this.state.index].Position !== "Professor")
+      {
+        alert("You do not have the right!");
+        this.setState({showEvaluation: false});
+      }
+      else
+      {
+        this.setState({showEvaluation: true});
+      }
+    }    
+
+    toggleShowEvaluation(){
+      this.setState({showEvaluation: false});
+    }
+
+	  toggleShowMessage(){
   		this.setState({showMessage: false});
   	}
 
@@ -200,32 +250,66 @@ export class Profile extends React.Component{
   		this.setState({invitationList: this.state.invitationList});
   	}
 
-	handleDeleteMember(e){
+	  handleDeleteMember(e){
   		let input = e.target.name.split("@");
   		let intIndex = parseInt(input[1]);
   		this.props.deleteMember(this.state.myName, input[0]);
   		this.state.groupMember.splice(intIndex, 1);
   		this.setState({groupMember: this.state.groupMember});
   	}
-	render(){
-    debugger;
+
+    handleDeclineEval(e){
+      let input = e.target.name.split("@");
+      this.props.declineEval(input[0], input[1]);
+      this.setState(this.state);
+    }
+
+    handleAcceptEval(e){
+      let input = e.target.name.split("@");
+      this.props.acceptEval(input[0], input[1]);
+      this.setState(this.state);
+    }
+
+	  render(){
+      debugger;
+      if(this.state.showEvaluation)
+      {
+        return (
+          <div>
+          <ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myEvaluation={this.myEvaluation}/>
+          <ul>
+          {
+            this.props.app.UserData[this.state.index].Evaluation.map((item, index) => {
+              let m_message = "To " + item.to + ": " + item.review;
+              let inputString = item.to + "@" + item.review;
+              return (
+                <li>{m_message} <button name={inputString} onClick={this.handleDeclineEval}>Decline</button> <button name={inputString} onClick={this.handleAcceptEval}>Accept</button> </li>
+              );
+            })
+          }
+          </ul>
+          <button onClick={this.toggleShowEvaluation}>Close</button>
+          </div>
+        );
+      }
+
   		if(this.state.showMessage)
   		{
   	  	return (
   	  		<div>
-  	  		<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup}/>
+  	  		<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myEvaluation={this.myEvaluation}/>
   	  		<ul>
-  	  	{
-  	  		this.state.messageList.map((item, index) => {
-  	  			let m_message = item.From + ": " + item.Content;
-  	  			let stringIndex = index.toString();
-  	  			let inputString = item.From + "@" + item.To + "@" + item.Content + "@" + stringIndex;
-  	  			let inputString2 = item.From + "@" + item.To;
-  	  			return (
-  	  				<li>{m_message} <button name={inputString} onClick={this.handleDelete}>Delete</button> <button name={inputString2} onClick={this.handleReply}>Reply</button> </li>
-  	  			);
-  	  		})
-  	  	}
+  	  	  {
+  	  		  this.state.messageList.map((item, index) => {
+  	  			  let m_message = item.From + ": " + item.Content;
+  	  			  let stringIndex = index.toString();
+  	  			  let inputString = item.From + "@" + item.To + "@" + item.Content + "@" + stringIndex;
+  	  			  let inputString2 = item.From + "@" + item.To;
+  	  			  return (
+  	  				  <li>{m_message} <button name={inputString} onClick={this.handleDelete}>Delete</button> <button name={inputString2} onClick={this.handleReply}>Reply</button> </li>
+  	  			  );
+  	  		  })
+  	  	  }
   	  	</ul>
   	  	<button onClick={this.toggleShowMessage}>Close</button>
   	  	</div>
@@ -236,7 +320,7 @@ export class Profile extends React.Component{
   	{
   		return (
   			<div>
-  			<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription}/>
+  			<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription} myEvaluation={this.myEvaluation}/>
   			<ul>
   			{
   				this.state.invitationList.map((item, index) => {
@@ -255,7 +339,7 @@ export class Profile extends React.Component{
   	{
   		return (
   			<div>
-  			<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription}/>
+  			<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription} myEvaluation={this.myEvaluation}/>
   			<ul>
         {
            this.props.app.UserData[this.state.index].Member.map((item, index) => {
@@ -272,7 +356,7 @@ export class Profile extends React.Component{
   	}
 
   	return (
-  		<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription} {...this.props}/>
+  		<ProfileRendered myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myName={this.state.myName} myPosition={this.state.myPosition} myDescription={this.state.myDescription} myEvaluation={this.myEvaluation} {...this.props}/>
   	);
   }
 }
@@ -286,6 +370,22 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+    acceptEval: (to, review) => {
+      dispatch({
+        type: "acceptEval",
+        to: to,
+        review: review
+      });
+    },
+
+    declineEval: (to, review) => {
+      dispatch({
+        type: "declineEval",
+        to: to,
+        review: review
+      });
+    },
+
 		addEvaluation: (to, in_review) => {
 			dispatch({
 				type: "addEvaluation",
