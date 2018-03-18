@@ -371,72 +371,40 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
     acceptEval: (to, review) => {
-      dispatch({
-        type: "acceptEval",
-        to: to,
-        review: review
-      });
+      dispatch(AcceptEval(to, review));
     },
 
     declineEval: (to, review) => {
-      dispatch({
-        type: "declineEval",
-        to: to,
-        review: review
-      });
+      dispatch(DeclineEval(to, review));
     },
 
 		addEvaluation: (to, in_review) => {
-			dispatch({
-				type: "addEvaluation",
-				to: to,
-				in_review: in_review
-			});
+			dispatch(AddEvaluation(to, in_review));
 		},
+
 		replyMessage: (from, to, message) => {
-			dispatch({
-				type: "replyMessage",
-				to: to,
-				from: from,
-				message: message
-			});
+			dispatch(ReplyMessage(from, to, message));
 		},
+
 		deleteMessage: (from, to, message) => {
-			dispatch({
-				type: "deleteMessage",
-				to: to,
-				from: from,
-				message: message
-			});
+			dispatch(DeleteMessage(from, to, message));
 		},
+
 		acceptInvitation: (from, to) => {
-			dispatch({
-				type: "acceptInvitation",
-				to: to,
-				from: from,
-			});
+			dispatch(AcceptInvitation(from, to));
 		},
+
 		declineInvitation: (from, to) => {
-			dispatch({
-				type: "declineInvitation",
-				to: to,
-				from: from,
-			});
+			dispatch(DeclineInvitation(from, to));
 		},
+
 		addInvitation: (from, to) => {
-			dispatch({
-				type: "addInvitation",
-				to: to,
-				from: from
-			});
+			dispatch(AddInvitation(from, to));
 		},
+
 		deleteMember: (from, to) => {
-			dispatch({
-				type: "deleteMember",
-				to: to,
-				from: from
-			});
-		},
+			dispatch(DeleteMember(from, to));
+		}
 	};
 };
 

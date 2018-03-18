@@ -4,6 +4,7 @@ import SearchedResults from './SearchedResults.js';
 import './searched.css';
 import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import * from "./actionReducer";
 
 
 export class Searched extends Component {
@@ -385,51 +386,26 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         SignUps: (newObject) => {
-            dispatch({
-                type: "SignUps",
-                newObject: newObject
-            });
+            dispatch(signUps(newObject));
         },
         LoggedIn: (username) => {
-            dispatch({
-                type: "LoggedIn",
-                username: username
-            });
+            dispatch(loggedIn(username));
         },
         Searching: (value) => {
-            dispatch({
-                type: "Searching",
-                value: value
-            });
+            dispatch(searching(value));
         },
         LogOut: () => {
-            dispatch({
-                type: "LogOut"
-            })
-        },
+            dispatch(logOut())
+        }
         addEvaluation: (to, in_review) => {
-			dispatch({
-				type: "addEvaluation",
-				to: to,
-				in_review: in_review
-			});
+			dispatch(AddEvaluation(to, in_review));
 		},
 		replyMessage: (from, to, message) => {
-			dispatch({
-				type: "replyMessage",
-				to: to,
-				from: from,
-				message: message
-			});
+			dispatch(ReplyMessage(from, to, message));
 		},
 		addInvitation: (from, to) => {
-			dispatch({
-				type: "addInvitation",
-				to: to,
-				from: from
-			});
+			dispatch(AddInvitation(from, to));
 		}
-
     };
 }
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
 import './index.css';
-
+import * from "./actionReducer";
 
 export class Homepage extends Component {
     constructor() {
@@ -360,27 +360,16 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         SignUps: (newObject) => {
-            dispatch({
-                type: "SignUps",
-                newObject: newObject
-            });
+            dispatch(signUps(newObject));
         },
         LoggedIn: (username) => {
-            dispatch({
-                type: "LoggedIn",
-                username: username
-            });
+            dispatch(loggedIn(username));
         },
         Searching: (value) => {
-            dispatch({
-                type: "Searching",
-                value: value
-            });
+            dispatch(searching(value));
         },
         LogOut: () => {
-            dispatch({
-                type: "LogOut"
-            })
+            dispatch(logOut())
         }
     };
 };
