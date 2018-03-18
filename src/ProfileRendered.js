@@ -15,17 +15,18 @@ class ProfileRendered extends React.Component{
 		<div className="container">
 		
      	<header>
+ 
+       	<div className="topnavprofile" id="myTopnav">
+  		    <a className="activeprofile" onClick={this.toHome.bind(this)}>Home</a>
+         	<a id="logoutButton" onClick={this.props.signOut}>Log Out</a>
+         	<a href="javascript:void(0);" style={{fontSize:'15px'}} className="icon" onClick={this.props.dropDown}>&#9776;</a>
+     	  </div>
 
-       	<div className="topnav" id="myTopnav">
-		<a onClick={this.toHome.bind(this)}>Home</a>
-       	<a href="#" id="logoutButton" onClick={this.props.signOut}>Log Out</a>
-       	<a href="javascript:void(0);" style={{fontSize:'15px'}} className="icon" onClick={this.props.dropDown}>&#9776;</a>
-     	</div>
      	<h1>Profile</h1>
      	</header>
 
 
-		<nav>
+		<nav className="profile">
   		<ul>
     		<li className="section">	</li>
     		<li id="myName">Name: {this.props.myName}</li>
@@ -37,7 +38,7 @@ class ProfileRendered extends React.Component{
   		</ul>
 		</nav>
 
-		<article>
+		<article className="profile">
   		<div className="article-section">
       		<h1>About Myself</h1>
     		<p>{this.props.myDescription}</p>

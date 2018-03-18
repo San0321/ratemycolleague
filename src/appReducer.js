@@ -1,5 +1,5 @@
 import {createStore, combineReducers} from "redux";
-import logger from "redux-logger";
+import {logger} from "redux-logger";
 import App from "./App";
 
 const initialState = {
@@ -56,7 +56,7 @@ const initialState = {
       Current: null, // Name
       Search:"",
       SearchItem:"",
-      Searched: [],
+      Searched: []
        
     };
 
@@ -155,7 +155,7 @@ export const appReducer = (state = initialState, action) => {
     	case "declineInvitation":
   			for(let i=0; i < state.Invitation.length; ++i)
   			{
-  				if(state.Invitation.From === action.from && state.Invitation.To === action.to)
+  				if(state.Invitation[i].From === action.from && state.Invitation[i].To === action.to)
   				{
   					state.Invitation.splice(i, 1);
   				}
@@ -208,9 +208,9 @@ export const appReducer = (state = initialState, action) => {
   			};
   			break;
       case "SignUps":
+        state.UserData.push(action.newObject);
         state = {
-          ...state,
-          UserData: state.UserData.push(action.newObject)
+          ...state, 
         };
         break;
 

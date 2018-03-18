@@ -38,7 +38,7 @@ export class Searched extends Component {
             this.signingCheck(false);
 		}
 		debugger;
-		this.state.Searched = this.props.app.Searched;
+		//this.state.Searched = this.props.app.Searched;
 		if(this.props.app.UserData) {
 			for(let i=0; i < this.props.app.UserData.length; ++i)
 			{
@@ -99,10 +99,10 @@ export class Searched extends Component {
 
     dropDown() {
     	var x = document.getElementById("myTopnav");
-    	if (x.className === "topnav") {
+    	if (x.className === "topnavsearch") {
         	x.className += " responsive";
     	} else {
-        	x.className = "topnav";
+        	x.className = "topnavsearch";
     	}
 	}
 
@@ -222,19 +222,13 @@ export class Searched extends Component {
 	  }
 
 	  searching(e) {
+	  	debugger;
 		  this.props.Searching(e.target[0].value);
-		 // this.setState(this.state);
+		 this.setState(this.state);
 		  debugger;
-		//  
+		// 
+		//this.props.history.push({pathname: '/searched'}); 
 	  }
-	  componentWillUpdate (nextProps) {
-		  debugger;
-		 // this.state.Searched = nextProps.Searched;
-		  //this.props.history.push({pathname: '/searched'});
-		 // this.setState(this.state);
-		// do whatever clean up you need before rerendering
-		// goo practise checking somehow that you are in the desired situation
-	 }
 
 	handleAddInvitation(){
 		this.props.addInvitation(this.props.app.Current, this.props.app.Searched[0].Name);
@@ -277,10 +271,10 @@ export class Searched extends Component {
 
 					<div className="topnavsearch" id="myTopnav">
 						<a onClick={this.toHome.bind(this)} className="activesearch">Home</a>
-						<a href="#" onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}} id="signInModal">Sign In</a>
-	  					<a href="#" onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}} id ="signUpModal">Sign Up</a>
-								<a href="#" id='profile' style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>
-								<a href="#" id="logoutButton" onClick={this.signOut.bind(this)}>Log Out</a>
+						<a onClick={this.signInOnClick.bind(this)} style={{display: this.state.signInState}} id="signInModal">Sign In</a>
+	  					<a onClick={this.signUpOnClick.bind(this)} style={{display: this.state.signUpState}} id ="signUpModal">Sign Up</a>
+								<a id='profile' style={{display: this.state.profileState}} onClick={this.toProfile.bind(this)}>Profile</a>
+								<a id="logoutButton" onClick={this.signOut.bind(this)}>Log Out</a>
 	  					 <a href="javascript:void(0);" style={topnavStyle} className="icon" onClick={this.dropDown.bind(this)}>&#9776;</a>
 					</div>
 
@@ -311,7 +305,7 @@ export class Searched extends Component {
 						<ul>
 							<div className="results">
 								
-									{this.state.Searched ? this.state.Searched.map(item => (
+									{this.props.app.Searched ? this.props.app.Searched.map(item => (
 										<SearchedResultList key={item.Name} data={item}/>
 									)) : ""}
 									
@@ -323,7 +317,7 @@ export class Searched extends Component {
 				</nav>
 				<article id="Search">
 					<div className = "section">
-					{this.state.Searched ? <SearchedResults item={this.state.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/> : ""}
+					{this.props.app.Searched ? <SearchedResults item={this.props.app.Searched[0]} SendMessage={this.handleSendMessage.bind(this)} AddInvitation={this.handleAddInvitation.bind(this)} AddEvaluation={this.handleWriteEvaluation.bind(this)}/> : ""}
 						
 					</div>
 				</article>
@@ -346,7 +340,7 @@ export class Searched extends Component {
 						</div>
 						<div className="container" style={moduleContainerStyle}>
 							 <button type="button" onClick={this.closeOnClick.bind(this)} className="cancelbtn">Cancel</button>
-							 <span className="psw">Forgot <a href="#">password?</a></span>
+							 <span className="psw">Forgot <a>password?</a></span>
 						 </div>
 				</div>
 			</div>
@@ -372,7 +366,7 @@ export class Searched extends Component {
                         </div>
 						<div className="container" style={moduleContainerStyle}>
 							 <button type="button" onClick={this.closeOnClick.bind(this)} className="cancelbtn">Cancel</button>
-							 <span className="psw">Forgot <a href="#">password?</a></span>
+							 <span className="psw">Forgot <a>password?</a></span>
 						 </div>
 					</div>
 			</div>

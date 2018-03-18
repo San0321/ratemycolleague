@@ -23,13 +23,26 @@ export default class SearchedResults extends React.Component {
       }
       this.setState(this.state);
   }
-  // map for buttons
+  // map for buttons this.state.img
   render() {
+    let rick = require("./profile.png");
+    let picture = require("./bandabi.jpg");
+    let rickAndMorty = require("./RM_profile.png");
+ 
+    if(this.state.img === "./profile.png") {
+      picture = rick;
+    }
+    else if (this.state.img === "./RM_profile.png") {
+      picture = rickAndMorty;
+    }
+    else {
+      // nothing happens
+    }
       return (
           
           <div className={"section"}>
             <h1>{this.state.h1}</h1>
-            <img className={"profile"} src={this.state.img}/>
+            <img className={"profile"} src={picture}/>
             <button onClick={this.props.AddInvitation}>Send Invitation</button>
             <button onClick={this.props.SendMessage}>Send Message</button>
             <button onClick={this.props.AddEvaluation}>Write Evaluation</button>
