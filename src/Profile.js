@@ -3,13 +3,21 @@ import ReactDOM from 'react-dom';
 import { App } from './App';
 import ProfileRendered  from './ProfileRendered';
 import {connect} from "react-redux";
+import "./profile.css";
+import { AcceptEval, DeclineEval, AddEvaluation, AddInvitation, ReplyMessage, DeleteMessage, AcceptInvitation, DeclineInvitation, DeleteMember, signUps, loggedIn, searching, logOut } from "./actionReducer";
 
 export class Profile extends React.Component{
   constructor(props) {
     super(props);
+    let description = "";
+    for(let a = 0; a < this.props.app.UserData.length; a++) {
+      if(this.props.app.UserData[a].Name === this.props.app.Current) {
+        description = this.props.app.UserData[a].Description;
+      }
+    }
     this.state = {
     	myName: this.props.app.Current,
-    	myDescription: this.props.app.myDescription,
+    	myDescription: description,
     	myPosition: this.props.app.myPosition,
     	showGroup: false,
     	showMessage: false,
@@ -45,6 +53,7 @@ export class Profile extends React.Component{
 
 	if(this.props.app.UserData) 
 	{
+    debugger;
 		for(let i=0; i < this.props.app.UserData.length; ++i)
 		{
 			if(this.props.app.UserData[i].Name === this.state.myName)
@@ -276,19 +285,21 @@ export class Profile extends React.Component{
       {
         return (
           <div>
-          <ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myEvaluation={this.myEvaluation}/>
+          <ProfileRendered history={this.props.history} myMessage={this.myMessage} myName = {this.state.myName} myDescription={this.state.myDescription} myInvitation={this.myInvitation} myGroup={this.myGroup} myEvaluation={this.myEvaluation}/>
           <ul>
           {
             this.props.app.UserData[this.state.index].Evaluation.map((item, index) => {
               let m_message = "To " + item.to + ": " + item.review;
               let inputString = item.to + "@" + item.review;
               return (
-                <li>{m_message} <button name={inputString} onClick={this.handleDeclineEval}>Decline</button> <button name={inputString} onClick={this.handleAcceptEval}>Accept</button> </li>
+                <div className="messages">
+                <ul>{m_message} <button name={inputString} onClick={this.handleDeclineEval}>Decline</button> <button name={inputString} onClick={this.handleAcceptEval}>Accept</button> </ul>
+                </div>
               );
             })
           }
           </ul>
-          <button onClick={this.toggleShowEvaluation}>Close</button>
+          <button className="closeButton" onClick={this.toggleShowEvaluation}>Close</button>
           </div>
         );
       }
@@ -297,7 +308,7 @@ export class Profile extends React.Component{
   		{
   	  	return (
   	  		<div>
-  	  		<ProfileRendered history={this.props.history} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myEvaluation={this.myEvaluation}/>
+  	  		<ProfileRendered myDescription={this.state.myDescription} history={this.props.history} myName = {this.state.myName} myMessage={this.myMessage} myInvitation={this.myInvitation} myGroup={this.myGroup} myEvaluation={this.myEvaluation}/>
   	  		<ul>
   	  	  {
   	  		  this.state.messageList.map((item, index) => {
@@ -306,12 +317,14 @@ export class Profile extends React.Component{
   	  			  let inputString = item.From + "@" + item.To + "@" + item.Content + "@" + stringIndex;
   	  			  let inputString2 = item.From + "@" + item.To;
   	  			  return (
-  	  				  <li>{m_message} <button name={inputString} onClick={this.handleDelete}>Delete</button> <button name={inputString2} onClick={this.handleReply}>Reply</button> </li>
+                <div className="messages">
+  	  				  <ul>{m_message} <button name={inputString} onClick={this.handleDelete}>Delete</button> <button name={inputString2} onClick={this.handleReply}>Reply</button> </ul>
+                </div>
   	  			  );
   	  		  })
   	  	  }
   	  	</ul>
-  	  	<button onClick={this.toggleShowMessage}>Close</button>
+  	  	<button className="closeButton" onClick={this.toggleShowMessage}>Close</button>
   	  	</div>
   	  );  	
   	}
@@ -326,11 +339,16 @@ export class Profile extends React.Component{
   				this.state.invitationList.map((item, index) => {
   					let stringIndex = index.toString();
   					let inputString = item.From + "@" + item.To + "@" + stringIndex;
-  					return (<li>{item.From + " invites you!"} <button name={inputString} onClick={this.handleAccept}>Accept</button><button name={inputString} onClick={this.handleDecline}>Decline</button></li>);
-  				})
+  					return (
+              <div className="messages">
+              <ul>{item.From + " invites you!"} <button name={inputString} onClick={this.handleAccept}>Accept</button><button name={inputString} onClick={this.handleDecline}>Decline</button></ul>
+
+  				    </div>
+              );
+          })
   			}
   			</ul>
-  			<button onClick={this.toggleShowInvitation}>Close</button>
+  			<button className="closeButton" onClick={this.toggleShowInvitation}>Close</button>
   			</div>
   		);
   	}
@@ -345,12 +363,15 @@ export class Profile extends React.Component{
            this.props.app.UserData[this.state.index].Member.map((item, index) => {
                     let stringIndex = index.toString();
                     let inputString = item + "@" + stringIndex;
-                    return (<li>{item} <button name={inputString} onClick={this.handleDeleteMember}>Delete</button> </li>);
+                    return (
+                      <div className="messages">
+                      <ul>{item} <button name={inputString} onClick={this.handleDeleteMember}>Delete</button> </ul>
+                      </div>);
                 })
           } 
   			}
   			</ul>
-  			<button onClick={this.toggleShowGroup}>Close</button>
+  			<button className="closeButton" onClick={this.toggleShowGroup}>Close</button>
   			</div>
   		);
   	}

@@ -14,6 +14,26 @@ export function DeclineEval(to, review){
 	};
 }
 
+export function AddInvitation(from, to){
+	return {
+		type: "addInvitation",
+		to: to,
+		from: from
+	};
+}
+
+export function AddEvaluation(to, in_review){
+	return dispatch => { 
+		setTimeout(() => {
+			dispatch({
+				type: "addEvaluation",
+        		to: to,
+        		in_review: in_review
+			});
+		}, 2);
+	}
+}
+/*
 export function AddEvaluation(to, in_review){
 	return {
 		type: "addEvaluation",
@@ -21,7 +41,7 @@ export function AddEvaluation(to, in_review){
 		in_review: in_review
 	};
 }
-
+*/
 export function ReplyMessage(from, to, message){
 	return {
 		type: "replyMessage",

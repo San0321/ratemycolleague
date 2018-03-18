@@ -1,5 +1,6 @@
-import {createStore, combineReducers} from "redux";
+import {createStore, combineReducers, applyMiddleware} from "redux";
 import {logger} from "redux-logger";
+import thunk from "redux-thunk";
 import App from "./App";
 
 const initialState = {
@@ -63,7 +64,7 @@ const initialState = {
         Evaluation: [],
         Picture: "",
         Skill: ["CSE134", "CSE141"],
-        Class: [].
+        Class: [],
         Email: "ichu@ucsd.edu",
         Member: []
       }],
@@ -76,12 +77,13 @@ const initialState = {
 export const appReducer = (state = initialState, action) => {
 	switch (action.type){
     case "acceptEval":
+      let counter1 = 0;
       for(let i=0; i < state.UserData.length; ++i)
       {
         if(state.UserData[i].Name === action.to)
         {
           state.UserData[i].Evaluation.push(action.review);
-          break;
+          ++counter1;
         }
         if(state.UserData[i].Position === "Professor")
         {
@@ -90,8 +92,14 @@ export const appReducer = (state = initialState, action) => {
             if(state.UserData[i].Evaluation[j].to === action.to && state.UserData[i].Evaluation[j].review === action.review)
             {
               state.UserData[i].Evaluation.splice(j, 1);
+              ++counter1;
+              break;
             }
           }
+        }
+        if(2 <= counter)
+        {
+          break;
         }
       }
       state = {
@@ -254,6 +262,7 @@ export const appReducer = (state = initialState, action) => {
   				...state
   			};
   			break;
+
       case "SignUps":
         state.UserData.push(action.newObject);
         state = {
@@ -316,4 +325,4 @@ export const appReducer = (state = initialState, action) => {
 	return state;
 };
 
-export const store = createStore(combineReducers({appReducer}), {});
+export const store = createStore(combineReducers({appReducer}), applyMiddleware(thunk));

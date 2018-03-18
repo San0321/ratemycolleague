@@ -10,7 +10,8 @@ export default class SearchedResults extends React.Component {
             h1: this.props.item.Name,
             img: this.props.item.Picture,
             h5: this.props.item.Email,
-            p: this.props.item.Description
+            p: this.props.item.Description,
+            h6: this.props.item.Evaluation
           }
       }
       else {
@@ -18,6 +19,7 @@ export default class SearchedResults extends React.Component {
             h1: "",
             img: "",
             h5: "",
+            h6: "",
             p: ""
           }
       }
@@ -47,6 +49,7 @@ export default class SearchedResults extends React.Component {
             <button onClick={this.props.SendMessage}>Send Message</button>
             <button onClick={this.props.AddEvaluation}>Write Evaluation</button>
             <h5>{this.state.h5}</h5>
+            <h6>{this.state.h6}</h6>
             <p>{this.state.p}</p>
           </div>
 

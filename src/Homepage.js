@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import {connect} from 'react-redux';
 import './index.css';
-import * from "./actionReducer";
+import { AcceptEval, DeclineEval, AddEvaluation, ReplyMessage, DeleteMessage, AcceptInvitation, AddInvitation, DeclineInvitation, DeleteMember, signUps, loggedIn, searching, logOut } from "./actionReducer";
 
 export class Homepage extends Component {
     constructor() {
@@ -139,7 +139,6 @@ export class Homepage extends Component {
                 alert("This username is already taken. Please pick different username");
                 flag = false;
             }
-        
         }
         
         if(flag) {
@@ -148,8 +147,16 @@ export class Homepage extends Component {
                 Name: name,
                 Password: password,
                 Id: username,
-                Description: desc
-            }
+                Description: desc,
+                Position: "",
+                Endorsement: "",
+                Evaluation: [],
+                Picture: "",
+                Skill: [],
+                Member: [],
+                Email: ""
+
+            };
             this.props.SignUps(newData);
             this.props.LoggedIn(username);
             // also we need to store it to the state

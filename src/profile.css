@@ -1,28 +1,76 @@
-.container {
-    border: 2px solid #dedede;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
+.bodyprofile {
+  font-family: 'Open Sans', sans-serif;
+
 }
 
+/*
 .darker {
     border-color: #ccc;
     background-color: #ddd;
 }
+*/
+.messages {
+  float: left;
+  width: 400px;
+  height: 300px;
+  padding: 30px;
 
-div.container {
-    width: 100%;
-    border: 1px solid gray;
+  border-style: solid;
+  box-sizing: border-box;
+}
+button .closeButton {
+  float: left;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  border-style: solid;
+  box-sizing: border-box;
+  background-color: red;
 }
 
-header, footer {
+aside {
+    border: 2px solid black;
+    border-radius: 5px;
+}
+.profilebody {
+    border: 2px solid black;
+    border-radius: 5px;
+}
+nav {
+    float: left;
+    max-width: 300px;
+    padding: 1em;
+    text-align: center;
+}
+#profile {
+    margin-left: 310px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+
+.headerprofile {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+img .display {
+    width:150px;
+    height:150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header .profile, footer .profile {
     padding: 1em;
     color: white;
     background-color: black;
     clear: left;
     text-align: center;
 }
+
 
 nav .profile {
     float: left;
@@ -40,12 +88,14 @@ nav .profile ul a {
     text-decoration: none;
 }
 
+/*
 article .profile {
     margin-left: 170px;
     border-left: 1px solid gray;
     padding: 1em;
     overflow: hidden;
 }
+*/
 /* Style the top navigation bar */
 .topnavprofile {
   overflow: hidden;

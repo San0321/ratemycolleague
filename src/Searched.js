@@ -4,7 +4,7 @@ import SearchedResults from './SearchedResults.js';
 import './searched.css';
 import { Route, BrowserRouter, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * from "./actionReducer";
+import { AcceptEval, DeclineEval, AddEvaluation, ReplyMessage, DeleteMessage, AcceptInvitation, AddInvitation, DeclineInvitation, DeleteMember, signUps, loggedIn, searching, logOut } from "./actionReducer";
 
 
 export class Searched extends Component {
@@ -181,8 +181,16 @@ export class Searched extends Component {
                 Name: name,
                 Password: password,
                 Id: username,
-                Description: desc
-            }
+                Description: desc,
+                Position: "",
+                Endorsement: "",
+                Evaluation: [],
+                Picture: "",
+                Skill: [],
+                Member: [],
+                Email: ""
+
+            };
             this.props.SignUps(username);
             this.props.LoggedIn(username);
             // also we need to store it to the state
@@ -396,7 +404,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         LogOut: () => {
             dispatch(logOut())
-        }
+        },
         addEvaluation: (to, in_review) => {
 			dispatch(AddEvaluation(to, in_review));
 		},
