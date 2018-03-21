@@ -68,7 +68,7 @@ export class Profile extends React.Component{
 		}
 	}
 
-	
+	  this.myEvaluation = this.myEvaluation.bind(this);
     this.myMessage = this.myMessage.bind(this);
     this.myInvitation = this.myInvitation.bind(this);
     this.myGroup = this.myGroup.bind(this);
@@ -86,6 +86,7 @@ export class Profile extends React.Component{
   }
 	
 	myMessage(){
+
       if(this.state.showEvaluation)
       {
         this.state.showEvaluation = false;
@@ -164,6 +165,7 @@ export class Profile extends React.Component{
   	}
 
     myEvaluation(){
+          debugger;
       if(this.state.showInvitation)
       {
         this.state.showInvitation = false;

@@ -18,7 +18,7 @@ describe('store/topics/reducer', () => {
 */
 import assert from 'assert';
 
-import {appReducer} from './appReducer';
+import {appReducer} from './appReducer'; 
 
 describe("App Reducer", () => {
 	describe('LogOut()', () => {
